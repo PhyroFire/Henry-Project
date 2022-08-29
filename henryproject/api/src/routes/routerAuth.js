@@ -1,13 +1,16 @@
 const router = require('express').Router()
 const passport = require('passport')
 const { Users } = require('../db')
-// const { Users } = require('../db')
+const {
+    DB_USER, DB_PASSWORD, DB_HOST,API_KEY, DB_NAME,KEY_CHECK
+  } = process.env;
+  
 
 
 router.get("/google", passport.authenticate("google", {scope:["profile", "email"]}))
 router.get("/google/callback", passport.authenticate("google", {
-    successRedirect: "http://localhost:3000/profile",
-    failureRedirect: "http://localhost:3000/"
+    successRedirect: `${DB_HOST}/profile`,
+    failureRedirect: `${DB_HOST}`
 }))
 
 router.get("/failed", (req, res) => {
@@ -29,7 +32,7 @@ router.get("/success", (req, res) => {
 
 router.get("/logout", (req, res) => {
     req.logout();
-    res.redirect("http://localhost:3000")
+    res.redirect(`${DB_HOST}`)
 })
 
 
